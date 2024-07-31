@@ -1,0 +1,16 @@
+﻿services:
+  api_example:
+    image: api_example
+    build:
+      context: .
+      dockerfile: API_Example/Dockerfile
+  redis:
+    image: redis/redis-stack:latest
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    environment:
+      - REDIS_USER=admin
+      - REDIS_PASSWORD=admin
+    volumes:
+      - ./data/redis:/data
