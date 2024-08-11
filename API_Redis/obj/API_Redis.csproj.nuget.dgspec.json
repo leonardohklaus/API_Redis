@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/klaus/CÓDIGOS/A PARTE/API_Example/API_Redis/API_Redis.csproj": {}
+    "/home/klaus/CÓDIGOS/A PARTE/API_Redis/API_Redis/API_Redis.csproj": {}
   },
   "projects": {
-    "/home/klaus/CÓDIGOS/A PARTE/API_Example/API_Redis/API_Redis.csproj": {
+    "/home/klaus/CÓDIGOS/A PARTE/API_Redis/API_Redis/API_Redis.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/klaus/CÓDIGOS/A PARTE/API_Example/API_Redis/API_Redis.csproj",
+        "projectUniqueName": "/home/klaus/CÓDIGOS/A PARTE/API_Redis/API_Redis/API_Redis.csproj",
         "projectName": "API_Redis",
-        "projectPath": "/home/klaus/CÓDIGOS/A PARTE/API_Example/API_Redis/API_Redis.csproj",
+        "projectPath": "/home/klaus/CÓDIGOS/A PARTE/API_Redis/API_Redis/API_Redis.csproj",
         "packagesPath": "/home/klaus/.nuget/packages/",
-        "outputPath": "/home/klaus/CÓDIGOS/A PARTE/API_Example/API_Redis/obj/",
+        "outputPath": "/home/klaus/CÓDIGOS/A PARTE/API_Redis/API_Redis/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/klaus/.nuget/NuGet/NuGet.Config"
@@ -38,6 +38,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.Extensions.Caching.StackExchangeRedis": {
+              "target": "Package",
+              "version": "[9.0.0-preview.6.24328.4, )"
+            },
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
@@ -45,10 +49,6 @@
             "RabbitMQ.Client": {
               "target": "Package",
               "version": "[6.8.1, )"
-            },
-            "Redis.OM": {
-              "target": "Package",
-              "version": "[0.7.4, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

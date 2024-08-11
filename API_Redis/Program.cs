@@ -1,22 +1,24 @@
-using API_Redis.Redis;
+
 using Microsoft.OpenApi.Models;
-using Redis.OM;
-using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+services.AddControllers();
 
-builder.Services.AddHostedService<IndexCreationService>();
-
-builder.Services.AddSingleton(new RedisConnectionProvider(ConnectionMultiplexer.Connect("localhost:6379")));
-
-builder.Services.AddSwaggerGen(c =>
+services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo{Title = "TodoAPI", Version = "v1"});
 });
+
+services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = "redis:6379";
+});
+
+//services.AddScoped<IItemRepository, ItemRepository>();
 
 var app = builder.Build();
 

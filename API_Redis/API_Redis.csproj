@@ -14,10 +14,14 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.0-preview.6.24328.4" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
-      <PackageReference Include="Redis.OM" Version="0.7.4" />
       <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Redis\IndexCreationService.cs" />
     </ItemGroup>
 
 </Project>

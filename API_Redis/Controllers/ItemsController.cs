@@ -1,7 +1,9 @@
 
+
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
-using Redis.OM;
-using Redis.OM.Searching;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
 
 namespace API_Redis.Controllers;
 
@@ -9,42 +11,46 @@ namespace API_Redis.Controllers;
 [Route("[controller]")]
 public class ItemsController : ControllerBase
 {
-    [HttpPost]
-    public async Task<Item> AddItem([FromBody] Item item)
+    private readonly IDistributedCache _cache;
+
+    public ItemsController(IDistributedCache cache)
     {
-        await _item.InsertAsync(item);
-        return item;
+        _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+    }
+    
+    [HttpPost]
+    public async Task<ActionResult<Item>> AddItem([FromBody] Item item)
+    {
+        await _cache.SetStringAsync(item.Id.ToString().Trim(), JsonConvert.SerializeObject(item));
+            
+        return Ok(item);
+    }
+    
+    [HttpPatch]
+    public async Task<ActionResult<Item>> UpdateItem([FromBody] Item item)
+    {
+        await _cache.SetStringAsync(item.Id.ToString().Trim(), JsonConvert.SerializeObject(item));
+            
+        return Ok(item);
     }
 
-    [HttpGet("filterDescription")]
-    public IList<Item> FilterByDescription([FromQuery] string description)
-    {       
-        return _item.Where(x => x.Description!.Contains(description)).ToList();
+    [HttpGet("{id}", Name = "GetItem")]
+    public async Task<ActionResult<Item>> GetItem(int id)
+    {
+        var strItem = await _cache.GetStringAsync(id.ToString().Trim());
+        
+        if (String.IsNullOrEmpty(strItem))
+            return null;
+        
+        var item = JsonConvert.DeserializeObject<Item>(strItem);
+        return Ok(item ?? item);
     }
     
-    [HttpPatch("{id}")]
-    public IActionResult Update([FromRoute] int id, [FromBody] string newName)
+    [HttpDelete("{id}", Name = "DeleteItem")]
+    [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> DeleteItem(int id)
     {
-        foreach (var item in _item.Where(x => x.Id == id))
-        {
-            item.Name = newName;
-        }
-        _item.Save();
-        return Accepted();
-    }
-    
-    [HttpDelete("{id}")]
-    public IActionResult DeleteItem([FromRoute] int id)
-    {
-        _provider.Connection.Unlink($"Item:{id}");
-        return NoContent();
-    }
-    
-    private readonly RedisCollection<Item> _item;
-    private readonly RedisConnectionProvider _provider;
-    public ItemsController(RedisConnectionProvider provider)
-    {
-        _provider = provider;
-        _item = (RedisCollection<Item>)provider.RedisCollection<Item>();
+        await _cache.RemoveAsync(id.ToString().Trim());
+        return Ok();
     }
 }

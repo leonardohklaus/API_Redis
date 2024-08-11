@@ -1,16 +1,19 @@
-﻿services:
-  api_example:
-    image: api_example
+﻿version: "3.4"
+
+services:
+  api_redis:
+    ports:
+      - "5150:8080"
+      - "5151:8081"
+    image: api_redis
     build:
       context: .
-      dockerfile: API_Example/Dockerfile
+      dockerfile: API_Redis/Dockerfile
+    depends_on:
+      - redis   
   redis:
-    image: redis/redis-stack:latest
+    image: redis:latest
+    restart: always
     ports:
-      - "6379:6379"
-      - "8001:8001"
-    environment:
-      - REDIS_USER=admin
-      - REDIS_PASSWORD=admin
-    volumes:
-      - ./data/redis:/data
+      - '6379:6379'
+    

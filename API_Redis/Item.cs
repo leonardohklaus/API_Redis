@@ -1,28 +1,14 @@
-using Redis.OM.Modeling;
+using System.ComponentModel.DataAnnotations;
 
 namespace API_Redis;
 
-[Document(StorageType = StorageType.Json, Prefixes = new []{"Item"})]
 public class Item
 {
-    [Indexed]
-    public int? Id { get; set; }
-    [Indexed]
-    public string? Name { get; set; }
-    [Indexed]
-    public string? Description { get; set; }
-
-    public Item(int id, string name, string description)
-    {
-        Id = id;
-        Name = name;
-        Description = description;
-    }
-
-    public Item()
-    {
-        
-    }
+    [Required]
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    
     
     
 }
