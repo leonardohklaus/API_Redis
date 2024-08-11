@@ -4,8 +4,6 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
-// Add services to the container.
-
 services.AddControllers();
 
 services.AddSwaggerGen(c =>
@@ -15,14 +13,10 @@ services.AddSwaggerGen(c =>
 
 services.AddStackExchangeRedisCache(options =>
 {
-    options.Configuration = "redis:6379";
+    options.Configuration = "redis_cache:6379";
 });
 
-//services.AddScoped<IItemRepository, ItemRepository>();
-
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
 
 app.UseSwagger();
 
@@ -37,7 +31,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
 
 
 app.Run();

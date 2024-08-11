@@ -11,9 +11,9 @@ services:
       dockerfile: API_Redis/Dockerfile
     depends_on:
       - redis   
-  redis:
+  redis_cache:
     image: redis:latest
     restart: always
     ports:
-      - '6379:6379'
+      - '6380:6379'
     
